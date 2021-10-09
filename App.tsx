@@ -1,85 +1,52 @@
-import React, {useState, useEffect} from 'react';
-
-// import all the components we are going to use
+import * as React from 'react';
 import {
-  SafeAreaView,
   Text,
-  StyleSheet,
   View,
+  StyleSheet,
   ScrollView,
-  StatusBar
+  FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
+import Constants from 'expo-constants';
+import LongText from './components/LongText';
 
-const App = () => {
-  const [dataSource, setDataSource] = useState([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        setDataSource(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  const ItemView = (item, key) => {
+export default class  App extends React.Component {
+  render() {
     return (
-      // Flat List Item
-      <View key={key}>
-        <Text
-          style={styles.itemStyle}
-          onPress={() => getItem(item)}>
-            {item.id}. {item.title}
-        </Text>
-        <ItemSeparatorView />
-      </View>
-    );
-  };
-
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View style={styles.itemSeparatorStyle} />
-    );
-  };
-
-  const getItem = (item) => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
-  };
-
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-      
-        <ScrollView horizontal={true} >
-          {
+      <View style={{ flex: 1, paddingTop: Constants.statusBarHeight }}>
+       
+        {/* Testing
+            Still BROKE 
             
-            dataSource.map(ItemView)
-          }
-        </ScrollView>
-
+        */}
+        <TouchableWithoutFeedback onPress={() => console.log('Pressed 5')}>
+          <View
+            style={[styles.container, { borderColor: 'red' }]}>
+            
+            <Text style={styles.label}>
+              {'5) Touchable > View > View > ScrollView\n'}
+             
+            </Text>
+              <ScrollView horizontal={true}
+                style={{ flex: 1 }}
+                onStartShouldSetResponder={() => true}>
+                <View><LongText /></View>
+              </ScrollView>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
-    </SafeAreaView>
-  );
-};
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      paddingTop: StatusBar.currentHeight,
-    },
-  itemStyle: {
-    padding: 10,
+  container: {
+    borderWidth: 5,
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 8,
   },
-  itemSeparatorStyle: {
-    height: 0.5,
-    width: '100%',
-   
-  },
-});
 
-export default App;
+  label: { fontWeight: 'bold' },
+});
